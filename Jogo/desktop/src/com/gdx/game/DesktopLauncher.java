@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Slime Bolado");
 		config.setWindowPosition(0, 30);
-		config.setWindowedMode(1080, 720);
+		config.setWindowedMode(1280, 720);
 		new Lwjgl3Application(new GdxGame(), config);
 	}
 }
