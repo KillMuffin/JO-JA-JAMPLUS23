@@ -15,7 +15,7 @@ public class GdxGame extends ApplicationAdapter {
 	Texture img, TPC, ProjDefault;
 	private Sprite PC;
 	private float posX, posY, vel, rposX, rposY;
-	private int bulletVel;
+	private int bulletVel, fireRate, fireAux;
 	private List<float[]> PProjectiles = new ArrayList<float[]>();
 	
 	@Override
@@ -30,7 +30,9 @@ public class GdxGame extends ApplicationAdapter {
 		rposX = Gdx.graphics.getWidth() / 2 - PC.getWidth() / 2; 
 		rposY = Gdx.graphics.getHeight() / 2 - PC.getHeight() / 2; 
 		vel = 2;
-		bulletVel = 1;
+		bulletVel = 3;
+		fireRate = 1;
+		fireAux = 60;
 	}
 
 	@Override
@@ -76,35 +78,47 @@ public class GdxGame extends ApplicationAdapter {
 	}
 
 	private void PProjectilesHandling() {
-
-		if (Gdx.input.isTouched()) {
-			
-			float[] projetil = new float[5];
-			
-			float mX = Gdx.input.getX() - 16;
-			float mY = 720 - Gdx.input.getY() - 16;
-			float velX = mX - rposX;
-			float velY = mY - rposY;
-
-			float length = (float) Math.sqrt(velX * velX + velY * velY);
-			velX *= bulletVel / length;
-			velY *= bulletVel / length;
-
-			projetil[0] = 150;
-			projetil[1] = velX;
-			projetil[2] = velY;
-			projetil[3] = rposX;
-			projetil[4] = rposY;
-
-			PProjectiles.add(projetil);
-			
+		if (fireAux > 0) {
+			fireAux -= fireRate;
 		}
+		if (fireAux <= 0) {
+			if (Gdx.input.isTouched()) {
 
+				fireAux = 60;
+
+				float[] projetil = new float[7];
+				
+				float mX = Gdx.input.getX() - 16;
+				float mY = 720 - Gdx.input.getY() - 16;
+				float velX = mX - rposX;
+				float velY = mY - rposY;
+
+				float length = (float) Math.sqrt(velX * velX + velY * velY);
+				velX *= bulletVel / length;
+				velY *= bulletVel / length;
+
+				projetil[0] = 300;
+				projetil[1] = velX;
+				projetil[2] = velY;
+				projetil[3] = rposX;
+				projetil[4] = rposY;
+				projetil[5] = posX;
+				projetil[6] = posY;
+
+				PProjectiles.add(projetil);
+				
+			}
+		}
 		for (int i=0; i < PProjectiles.size(); i++) {
 			float[] i2 = PProjectiles.get(i);
 			i2[0] -= 1;
-			i2[3] += i2[1];
+			i2[3] += i2[1]; 
 			i2[4] += i2[2];
+
+			i2[3] -= i2[5] - posX;
+			i2[4] -= i2[6] - posY;
+			i2[5] = posX;
+			i2[6] = posY;
 
 			if (i2[0] > 0) {
 				PProjectiles.set(i, i2);
