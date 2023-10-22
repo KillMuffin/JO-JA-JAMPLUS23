@@ -26,8 +26,6 @@ public class MenuScreen implements Screen{
 
     public MenuScreen(final Main main) {
     	
-    	System.out.println("Foi");
-    	
     	background = new Texture("template.jpg");
     	
     	skin = new Skin(Gdx.files.internal("arcade/skin/arcade-ui.json"));
@@ -42,7 +40,6 @@ public class MenuScreen implements Screen{
 
     	button.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
-                System.out.println("SEXO");
                 main.ChangeScreen(new MainGame(main));
             }
         });

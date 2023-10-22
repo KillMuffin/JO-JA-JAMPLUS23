@@ -46,13 +46,14 @@ public class MainGame implements Screen {
 
 	Texture background, tPC, ProjDefault, tKnight;
 	SpriteBatch batch;
-	private float posX, posY, vel, rposX, rposY, fireRate, fireAux;
-	private float enemyVelM, enemySpawnRateM;
-	private float knightVel;
-	private int bulletVel;
+	private float posX, posY, vel, rposX, rposY, fireRate, fireAux, spawnX, spawnY, roundCount;
+	private float enemyVelM;
+	private float bulletVel, knightVel;
+	private double enemySpawnRateM;
 	private List<float[]> PProjectiles = new ArrayList<float[]>();
 	private List<float[]> Knights = new ArrayList<float[]>();
-	private long lastSpawnTime;
+	private long lastSpawnTime, rTime;
+	private boolean round;
 
 	public Main main;
 
@@ -73,7 +74,13 @@ public class MainGame implements Screen {
 		fireRate = 1;
 		fireAux = 60;
 		lastSpawnTime = 0;
-		
+		enemySpawnRateM = 1;
+		spawnX = 0;
+		spawnY = 0;
+		rTime = TimeUtils.millis();
+		round = true;
+		roundCount = 1;
+
 		background = new Texture("template2.jpg");
 		tPC = new Texture("img/entities/PC/PHKingPoring.png");
 		ProjDefault = new Texture("img/entities/projectiles/PHdefault.png");
@@ -96,7 +103,7 @@ public class MainGame implements Screen {
 
 		this.movePC();
 		this.handlePProjectiles();
-		this.spawnKnight();
+		this.maelstrom();
 		this.handleKnights();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -104,7 +111,7 @@ public class MainGame implements Screen {
 		gameStage.act(Gdx.graphics.getDeltaTime());
         
         gameStage.getBatch().begin();
-        gameStage.getBatch().draw(background, 0, 0);
+        gameStage.getBatch().draw(background, posX, posY);
 
 		gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
 		
@@ -221,13 +228,65 @@ public class MainGame implements Screen {
 		}
 	}
 
+	private void maelstrom() {
+
+		if (round == false) {
+			if (TimeUtils.millis() - rTime > 20000) {
+					round = true;
+					rTime = TimeUtils.millis();
+					roundCount += 1;
+					enemySpawnRateM -= 0.3;
+					enemyVelM += 0.2;
+			}
+		}
+
+		if (round == true) {
+
+			if (TimeUtils.nanoTime() - lastSpawnTime > 2000000000 * enemySpawnRateM) {
+				
+				if (TimeUtils.millis() - rTime > 90000) {
+					round = false;
+					rTime = TimeUtils.millis();
+				}
+
+				float c = MathUtils.random(1, 4);
+
+				if (c == 1) {
+					spawnX = MathUtils.random(-100, -50);
+					spawnY = MathUtils.random(0, 720);
+				}
+
+				if (c == 2) {
+					spawnX = MathUtils.random(1330, 1380);
+					spawnY = MathUtils.random(0, 720);
+				}
+
+				if (c == 3) {
+					spawnX = MathUtils.random(0, 1280);
+					spawnY = -1 * MathUtils.random(80, 180);
+				}
+
+				if (c == 4) {
+					spawnX = MathUtils.random(0, 1280);
+					spawnY = MathUtils.random(800, 850);
+				}
+
+				spawnKnight();
+
+				lastSpawnTime = TimeUtils.nanoTime();
+			}
+		}
+		
+
+	}
+
 	private void spawnKnight() {
 		float[] knight = new float[7];
 		
 
 		knight[0] = 2;
-		knight[1] = MathUtils.random(0, 1280);
-		knight[2] = MathUtils.random(0, 720);
+		knight[1] = spawnX;
+		knight[2] = spawnY;
 		knight[3] = posX;
 		knight[4] = posY;
 
@@ -265,6 +324,4 @@ public class MainGame implements Screen {
 			}
 		}
 	}
-}
-
-	
+}	
