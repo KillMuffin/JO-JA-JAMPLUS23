@@ -2,7 +2,7 @@ package com.gdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.gdx.game.GdxGame;
+import com.gdx.game.Main;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -12,6 +12,6 @@ public class DesktopLauncher {
 		config.setTitle("Slime Bolado");
 		config.setWindowPosition(0, 30);
 		config.setWindowedMode(1280, 720);
-		new Lwjgl3Application(new GdxGame(), config);
+		new Lwjgl3Application(new Main(), config);
 	}
 }

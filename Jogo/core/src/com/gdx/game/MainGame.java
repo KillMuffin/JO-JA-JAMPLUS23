@@ -1,19 +1,51 @@
 package com.gdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class GdxGame extends ApplicationAdapter {
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+
+public class MainGame implements Screen {
+	public Stage gameStage;
+
+	Texture background, tPC, ProjDefault, tKnight;
 	SpriteBatch batch;
-	Texture img, tPC, ProjDefault, tKnight;
 	private float posX, posY, vel, rposX, rposY, fireRate, fireAux;
 	private float enemyVelM, enemySpawnRateM;
 	private float knightVel;
@@ -21,14 +53,15 @@ public class GdxGame extends ApplicationAdapter {
 	private List<float[]> PProjectiles = new ArrayList<float[]>();
 	private List<float[]> Knights = new ArrayList<float[]>();
 	private long lastSpawnTime;
-	
-	@Override
-	public void create () {
+
+	public Main main;
+
+	public MainGame(Main main) {
+		
+		this.main = main;
+		
 		batch = new SpriteBatch();
-		img = new Texture("img/PHBG.png");
-		tPC = new Texture("img/entities/PC/PHKingPoring.png");
-		ProjDefault = new Texture("img/entities/projectiles/PHdefault.png");
-		tKnight = new Texture("img/entities/knight/PHgoblin.png");
+		
 		posX = 0; 
 		posY = 0; 
 		rposX = Gdx.graphics.getWidth() / 2; 
@@ -40,42 +73,86 @@ public class GdxGame extends ApplicationAdapter {
 		fireRate = 1;
 		fireAux = 60;
 		lastSpawnTime = 0;
+		
+		background = new Texture("template2.jpg");
+		tPC = new Texture("img/entities/PC/PHKingPoring.png");
+		ProjDefault = new Texture("img/entities/projectiles/PHdefault.png");
+		tKnight = new Texture("img/entities/knight/PHgoblin.png");
+		
+		gameStage = new Stage(new FitViewport(1280, 720));
+		Gdx.input.setInputProcessor(gameStage);
+		
 	}
 
 	@Override
-	public void render () {
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void render(float delta) {
+		// TODO Auto-generated method stub
 
 		this.movePC();
 		this.handlePProjectiles();
 		this.spawnKnight();
 		this.handleKnights();
 
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, posX, posY);
-		batch.draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		
+		gameStage.act(Gdx.graphics.getDeltaTime());
+        
+        gameStage.getBatch().begin();
+        gameStage.getBatch().draw(background, 0, 0);
+
+		gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
 		
 		for (int i=0; i < PProjectiles.size(); i++) {
 			float[] projectile = PProjectiles.get(i);
-			batch.draw(ProjDefault, projectile[3], projectile[4]);
+			gameStage.getBatch().draw(ProjDefault, projectile[3], projectile[4]);
 		} 
 
 		for (int i=0; i < Knights.size(); i++) {
 			float[] knight = Knights.get(i);
-			batch.draw(tKnight, knight[1], knight[2]);
+			gameStage.getBatch().draw(tKnight, knight[1], knight[2]);
 		}
 
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-		tPC.dispose();
-		ProjDefault.dispose();
+		gameStage.getBatch().end();
+        
+		gameStage.draw();
+		
 	}
 
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+	}
+	
 	private void movePC() {
 
 		if (Gdx.input.isKeyPressed(Input.Keys.D) && posX > -Gdx.graphics.getWidth()) {
@@ -189,3 +266,5 @@ public class GdxGame extends ApplicationAdapter {
 		}
 	}
 }
+
+	
