@@ -46,14 +46,14 @@ public class MainGame implements Screen {
 
 	Texture background, tPC, ProjDefault, tKnight;
 	SpriteBatch batch;
-	private float posX, posY, vel, rposX, rposY, fireRate, fireAux, spawnX, spawnY, roundCount;
+	private float posX, posY, vel, rposX, rposY, fireRate, fireAux, spawnX, spawnY, roundCount, pDamage, HP;
 	private float enemyVelM;
 	private float bulletVel, knightVel;
 	private double enemySpawnRateM;
 	private List<float[]> PProjectiles = new ArrayList<float[]>();
 	private List<float[]> Knights = new ArrayList<float[]>();
-	private long lastSpawnTime, rTime;
-	private boolean round;
+	private long lastSpawnTime, rTime, iFrames;
+	private boolean round, tangible;
 
 	public Main main;
 
@@ -79,7 +79,10 @@ public class MainGame implements Screen {
 		spawnY = 0;
 		rTime = TimeUtils.millis();
 		round = true;
+		tangible = true;
 		roundCount = 1;
+		pDamage = 1;
+		HP = 4;
 
 		background = new Texture("background.png");
 		tPC = new Texture("slime.png");
@@ -105,6 +108,8 @@ public class MainGame implements Screen {
 		this.handlePProjectiles();
 		this.maelstrom();
 		this.handleKnights();
+		this.handlePProjectilesColision();
+		this.handlePCColision();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		
@@ -113,8 +118,16 @@ public class MainGame implements Screen {
         gameStage.getBatch().begin();
         gameStage.getBatch().draw(background, posX - background.getWidth() / 2 + 100, posY - background.getHeight() / 2);
 
-		gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
-		
+		if (tangible == true) {
+			gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
+		}
+
+		else {
+			if (TimeUtils.millis() % 2 == 1) {
+				gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
+			}
+		}
+
 		for (int i=0; i < PProjectiles.size(); i++) {
 			float[] projectile = PProjectiles.get(i);
 			gameStage.getBatch().draw(ProjDefault, projectile[3], projectile[4]);
@@ -122,7 +135,7 @@ public class MainGame implements Screen {
 
 		for (int i=0; i < Knights.size(); i++) {
 			float[] knight = Knights.get(i);
-			gameStage.getBatch().draw(tKnight, knight[1], knight[2]);
+			gameStage.getBatch().draw(tKnight, knight[1] - tKnight.getWidth() / 2, knight[2] - tKnight.getHeight() / 2);
 		}
 
 		gameStage.getBatch().end();
@@ -296,10 +309,6 @@ public class MainGame implements Screen {
 	}
 
 	private void handleKnights() {
-		
-		// if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) {
-		// 	this.spawnEnemies();
-		// }
 
 		for (int i=0; i < Knights.size(); i++) {
 			float[] knight = Knights.get(i);
@@ -322,6 +331,53 @@ public class MainGame implements Screen {
 			if (knight[0] <= 0) {
 				Knights.remove(knight);
 			}
+		}
+	}
+
+	private void handlePProjectilesColision() {
+		if (Knights.size() > 0) {
+			for (int i=0; i < PProjectiles.size(); i++) {
+				float[] projectile = PProjectiles.get(i);
+				for (int i2=0; i2 < Knights.size(); i2++) {
+					float[] knight = Knights.get(i2);
+					//projectile[3] X = projectile[4] = Y // knight[1] = X knight[2] = Y
+
+					float distX2 = projectile[3] - knight[1];
+					float DistY2 = projectile[4] - knight[2];
+
+					float distance = (float) Math.sqrt(distX2 * distX2 + DistY2 * DistY2);
+
+					if (distance <= 30) {
+						knight[0] -= pDamage;
+						PProjectiles.remove(projectile);
+					}
+				}
+			}
+		}
+	}
+
+	private void handlePCColision() {
+		if (Knights.size() > 0) {
+		
+			for (int i=0; i < Knights.size(); i++) {
+				float[] knight = Knights.get(i);
+				// knight[1] = X knight[2] = Y
+
+				float distX2 = rposX - knight[1];
+				float DistY2 = rposY - knight[2];
+
+				float distance = (float) Math.sqrt(distX2 * distX2 + DistY2 * DistY2);
+
+				if (TimeUtils.millis() - iFrames  > 900) {
+					tangible = true;
+					if (distance <= 70) {
+						HP -= 1;
+						tangible = false;
+						iFrames = TimeUtils.millis();
+					}
+				}
+			}
+		
 		}
 	}
 }	
