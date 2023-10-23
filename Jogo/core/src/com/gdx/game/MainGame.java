@@ -49,11 +49,13 @@ public class MainGame implements Screen {
 	private float posX, posY, vel, rposX, rposY, fireRate, fireAux, spawnX, spawnY, roundCount, pDamage, HP;
 	private float enemyVelM;
 	private float bulletVel, knightVel;
+	private Button buttonLife, buttonMove, buttonFire, buttonBack, buttonQuit;
+	private Skin skin;
 	private double enemySpawnRateM;
 	private List<float[]> PProjectiles = new ArrayList<float[]>();
 	private List<float[]> Knights = new ArrayList<float[]>();
 	private long lastSpawnTime, rTime, iFrames;
-	private boolean round, tangible;
+	private boolean round, isShop, tangible;
 
 	public Main main;
 
@@ -84,6 +86,23 @@ public class MainGame implements Screen {
 		pDamage = 1;
 		HP = 4;
 
+		isShop = false;
+		skin = new Skin(Gdx.files.internal("arcade/skin/arcade-ui.json"));
+		
+		buttonLife = new Button(skin);
+		buttonMove = new Button(skin);
+		buttonFire = new Button(skin);
+		
+		buttonBack = new Button(skin);
+		buttonQuit = new Button(skin);
+		
+		buttonLife.setPosition(318, 163);
+		buttonMove.setPosition(418, 163);
+		buttonFire.setPosition(518, 163);
+		
+		buttonBack.setPosition(418, 163);
+		buttonQuit.setPosition(518, 163);
+
 		background = new Texture("background.png");
 		tPC = new Texture("slime.png");
 		ProjDefault = new Texture("tiro.png");
@@ -91,6 +110,32 @@ public class MainGame implements Screen {
 		
 		gameStage = new Stage(new FitViewport(1280, 720));
 		Gdx.input.setInputProcessor(gameStage);
+
+		gameStage.addActor(buttonLife);
+		gameStage.addActor(buttonMove);
+		gameStage.addActor(buttonFire);
+
+		buttonLife.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+                round = false;
+            }
+        });
+		
+		buttonMove.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+                round = false;
+            }
+        });
+		
+		buttonFire.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+                round = false;
+            }
+        });
+		
+		if(isShop == false) {
+			round = true;
+		}
 		
 	}
 
@@ -116,27 +161,42 @@ public class MainGame implements Screen {
 		gameStage.act(Gdx.graphics.getDeltaTime());
         
         gameStage.getBatch().begin();
-        gameStage.getBatch().draw(background, posX - background.getWidth() / 2 + 100, posY - background.getHeight() / 2);
 
-		if (tangible == true) {
-			gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
-		}
-
-		else {
-			if (TimeUtils.millis() % 2 == 1) {
+        if(isShop == false) {
+        	gameStage.getBatch().draw(background, posX - background.getWidth() / 2 + 100, posY - background.getHeight() / 2);
+			
+        	if (tangible == true) {
 				gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
 			}
-		}
 
-		for (int i=0; i < PProjectiles.size(); i++) {
-			float[] projectile = PProjectiles.get(i);
-			gameStage.getBatch().draw(ProjDefault, projectile[3], projectile[4]);
-		} 
+			else {
+				if (TimeUtils.millis() % 2 == 1) {
+					gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
+				}
+			}
+        	this.movePC();
+    		
+    		for (int i=0; i < PProjectiles.size(); i++) {
+    			float[] projectile = PProjectiles.get(i);
+    			gameStage.getBatch().draw(ProjDefault, projectile[3], projectile[4]);
+    		} 
 
-		for (int i=0; i < Knights.size(); i++) {
-			float[] knight = Knights.get(i);
-			gameStage.getBatch().draw(tKnight, knight[1] - tKnight.getWidth() / 2, knight[2] - tKnight.getHeight() / 2);
-		}
+    		for (int i=0; i < Knights.size(); i++) {
+    			float[] knight = Knights.get(i);
+    			gameStage.getBatch().draw(tKnight, knight[1], knight[2]);
+    		}
+    		buttonLife.setVisible(false);
+    		buttonMove.setVisible(false);
+    		buttonFire.setVisible(false);
+        }
+
+        if(isShop == true) {
+        	gameStage.getBatch().draw(background, posX - background.getWidth() / 2 + 100, posY - background.getHeight() / 2);
+        	buttonLife.setVisible(true);
+        	buttonMove.setVisible(true);
+        	buttonFire.setVisible(true);
+        	
+        }
 
 		gameStage.getBatch().end();
         
@@ -186,6 +246,10 @@ public class MainGame implements Screen {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S) && posY < Gdx.graphics.getHeight()) {
 			posY += vel;
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			isShop = true;
 		}
 	}
 
