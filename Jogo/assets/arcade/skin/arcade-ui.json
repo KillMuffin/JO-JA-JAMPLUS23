@@ -2,12 +2,21 @@
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
 	screen: {
 		file: screen-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
 	title: {
 		file: title-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -166,7 +175,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
-		up: button
+		up: Teste
 		down: button-pressed
 	}
 	red: {

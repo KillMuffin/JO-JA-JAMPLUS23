@@ -1,132 +1,139 @@
 
 arcade-ui.png
-size: 1024,1024
+size: 1024, 1024
 format: RGBA8888
-filter: Linear,Linear
+filter: Linear, Linear
 repeat: none
 bg
   rotate: false
-  xy: 597, 623
+  xy: 597, 618
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 booth
   rotate: false
-  xy: 1, 240
+  xy: 1, 235
   size: 594, 783
   orig: 594, 783
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 177, 52
+  xy: 623, 70
   size: 61, 61
   orig: 61, 61
   offset: 0, 0
   index: -1
 button-bg
   rotate: false
-  xy: 401, 144
+  xy: 125, 30
   size: 94, 94
-  orig: 95, 94
-  offset: 1, 0
+  orig: 94, 94
+  offset: 0, 0
   index: -1
 button-pressed
   rotate: false
-  xy: 902, 175
+  xy: 930, 170
   size: 61, 61
   orig: 61, 61
   offset: 0, 0
   index: -1
 font-export
   rotate: false
-  xy: 1, 63
+  xy: 447, 56
   size: 174, 175
-  orig: 175, 176
-  offset: 0, 1
+  orig: 174, 175
+  offset: 0, 0
   index: -1
 joystick
   rotate: false
-  xy: 965, 142
+  xy: 686, 37
   size: 58, 94
-  orig: 122, 128
-  offset: 32, 33
+  orig: 58, 94
+  offset: 0, 0
   index: -1
 joystick-bg
   rotate: false
-  xy: 177, 115
+  xy: 1, 1
   size: 122, 123
-  orig: 122, 128
+  orig: 122, 123
   offset: 0, 0
   index: -1
 joystick-d
   rotate: false
-  xy: 300, 19
+  xy: 746, 42
   size: 58, 94
-  orig: 122, 128
-  offset: 32, 33
+  orig: 58, 94
+  offset: 0, 0
   index: -1
 joystick-dl
   rotate: false
-  xy: 497, 149
+  xy: 723, 142
   size: 69, 89
-  orig: 122, 128
-  offset: 21, 33
+  orig: 69, 89
+  offset: 0, 0
   index: -1
 joystick-dr
   rotate: false
-  xy: 568, 147
+  xy: 221, 35
   size: 68, 89
-  orig: 122, 128
-  offset: 32, 33
+  orig: 68, 89
+  offset: 0, 0
   index: -1
 joystick-l
   rotate: false
-  xy: 638, 143
+  xy: 794, 138
   size: 66, 93
-  orig: 122, 128
-  offset: 24, 33
+  orig: 66, 93
+  offset: 0, 0
   index: -1
 joystick-r
   rotate: false
-  xy: 706, 143
+  xy: 862, 138
   size: 66, 93
-  orig: 122, 128
-  offset: 32, 33
+  orig: 66, 93
+  offset: 0, 0
   index: -1
 joystick-u
   rotate: false
-  xy: 240, 23
+  xy: 806, 46
   size: 58, 90
-  orig: 122, 128
-  offset: 32, 33
+  orig: 58, 90
+  offset: 0, 0
   index: -1
 joystick-ul
   rotate: false
-  xy: 774, 147
+  xy: 291, 35
   size: 62, 89
-  orig: 122, 128
-  offset: 28, 33
+  orig: 62, 89
+  offset: 0, 0
   index: -1
 joystick-ur
   rotate: false
-  xy: 838, 147
+  xy: 355, 35
   size: 62, 89
-  orig: 122, 128
-  offset: 32, 33
+  orig: 62, 89
+  offset: 0, 0
   index: -1
 screen-export
   rotate: false
-  xy: 301, 140
+  xy: 623, 133
   size: 98, 98
-  orig: 99, 99
-  offset: 0, 1
+  orig: 98, 98
+  offset: 0, 0
   index: -1
 title-export
   rotate: false
-  xy: 597, 238
+  xy: 597, 233
   size: 383, 383
-  orig: 384, 384
-  offset: 0, 1
+  orig: 383, 383
+  offset: 0, 0
+  index: -1
+Teste
+  rotate: false
+  xy: 1, 126
+  size: 444, 107
+  orig: 444, 107
+  offset: 0, 0
   index: -1

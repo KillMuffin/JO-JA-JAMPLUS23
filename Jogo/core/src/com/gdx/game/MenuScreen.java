@@ -22,11 +22,14 @@ public class MenuScreen implements Screen{
     private Button button;
     private Skin skin;
 
-    Texture background;
+    Texture background, menuIniciar;
 
     public MenuScreen(final Main main) {
     	
-    	background = new Texture("template.jpg");
+    	System.out.println("Foi");
+    	
+    	background = new Texture("cinza.png");
+    	menuIniciar = new Texture("Logo.png");
     	
     	skin = new Skin(Gdx.files.internal("arcade/skin/arcade-ui.json"));
     	button = new Button(skin);
@@ -34,7 +37,7 @@ public class MenuScreen implements Screen{
     	menuStage = new Stage(new FitViewport(1280, 720));
     	Gdx.input.setInputProcessor(menuStage);
     	
-    	button.setPosition(440, 260); // Defina a posi��o do bot�o na tela
+    	button.setPosition(418, 163); // Defina a posi��o do bot�o na tela
     	
     	menuStage.addActor(button);
 
@@ -60,6 +63,7 @@ public class MenuScreen implements Screen{
         
         menuStage.getBatch().begin();
         menuStage.getBatch().draw(background, 0, 0);
+        menuStage.getBatch().draw(menuIniciar, 0, 0);
         menuStage.getBatch().end();
         
         menuStage.draw();

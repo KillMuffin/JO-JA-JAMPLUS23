@@ -81,10 +81,10 @@ public class MainGame implements Screen {
 		round = true;
 		roundCount = 1;
 
-		background = new Texture("template2.jpg");
-		tPC = new Texture("img/entities/PC/PHKingPoring.png");
-		ProjDefault = new Texture("img/entities/projectiles/PHdefault.png");
-		tKnight = new Texture("img/entities/knight/PHgoblin.png");
+		background = new Texture("background.png");
+		tPC = new Texture("slime.png");
+		ProjDefault = new Texture("tiro.png");
+		tKnight = new Texture("knight.png");
 		
 		gameStage = new Stage(new FitViewport(1280, 720));
 		Gdx.input.setInputProcessor(gameStage);
@@ -111,7 +111,7 @@ public class MainGame implements Screen {
 		gameStage.act(Gdx.graphics.getDeltaTime());
         
         gameStage.getBatch().begin();
-        gameStage.getBatch().draw(background, posX, posY);
+        gameStage.getBatch().draw(background, posX - background.getWidth() / 2 + 100, posY - background.getHeight() / 2);
 
 		gameStage.getBatch().draw(tPC, rposX - tPC.getWidth() / 2, rposY - tPC.getHeight() / 2);
 		
